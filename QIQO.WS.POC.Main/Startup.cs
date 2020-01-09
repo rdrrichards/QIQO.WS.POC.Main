@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using QIQO.WS.POC.Main.Core;
 
 namespace QIQO.WS.POC.Main
 {
@@ -21,6 +22,7 @@ namespace QIQO.WS.POC.Main
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSignalR();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -56,6 +58,7 @@ namespace QIQO.WS.POC.Main
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapHub<CommunicationHub>("comms");
             });
 
             app.UseSpa(spa =>
