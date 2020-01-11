@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace QIQO.WS.POC.Main.Core
@@ -15,11 +13,11 @@ namespace QIQO.WS.POC.Main.Core
         {
             _logger = logger;
         }
-        public async Task View(string uri)
+        public async Task View(string group, string uri)
         {
             try
             {
-                await Clients.Others.SendAsync("view", uri);
+                await Clients.Group(group).SendAsync("view", uri);
             }
             catch (Exception ex)
             {
@@ -28,7 +26,18 @@ namespace QIQO.WS.POC.Main.Core
         }
         public async Task Join(string userName)
         {
+            // await JoinOrCreateAggregateAsync(userName);
             await Clients.All.SendAsync("joined", userName);
+        }
+        public async Task JoinMain(string userName)
+        {
+            await Clients.All.SendAsync("joinedmain", userName);
+            await Groups.AddToGroupAsync(Context.ConnectionId, Context.ConnectionId);
+        }
+        public async Task JoinViewer(string name, string connectionId)
+        {
+            Groups.AddToGroupAsync(Context.ConnectionId, connectionId).Wait();
+            await Clients.Group(connectionId).SendAsync("joinedviewer", name);
         }
     }
 }

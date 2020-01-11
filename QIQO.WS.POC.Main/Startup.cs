@@ -21,6 +21,16 @@ namespace QIQO.WS.POC.Main
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AnyOrigin", builder =>
+                {
+                    builder
+                        .AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
             services.AddControllersWithViews();
             services.AddSignalR();
             // In production, the Angular files will be served from this directory
@@ -51,6 +61,7 @@ namespace QIQO.WS.POC.Main
                 app.UseSpaStaticFiles();
             }
 
+            app.UseCors("AnyOrigin");
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>

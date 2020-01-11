@@ -19,4 +19,7 @@ export class HomeComponent {
   goFour() {
     this.commsService.view('assets/four.html');
   }
+  join() {
+    this.commsService.join();
+  }
 }
