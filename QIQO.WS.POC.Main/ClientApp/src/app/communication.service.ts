@@ -34,7 +34,9 @@ export class CommunicationService {
     });
   }
   join() {
-    this.hubConnection.invoke('joinmain', 'rrichards (main)');
+    setTimeout(() => {
+      this.hubConnection.invoke('joinmain', 'rrichards (main)');
+    }, 3000);
   }
   view(uri: string) {
     this.hubConnection.invoke('view', this.hubConnection.connectionId, uri);

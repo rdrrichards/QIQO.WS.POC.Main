@@ -26,8 +26,9 @@ namespace QIQO.WS.POC.Main
                 options.AddPolicy("AnyOrigin", builder =>
                 {
                     builder
-                        .AllowAnyOrigin()
+                        .WithOrigins("http://localhost:4200", "https://localhost:44389")
                         .AllowAnyHeader()
+                        .AllowCredentials()
                         .AllowAnyMethod();
                 });
             });
@@ -69,7 +70,7 @@ namespace QIQO.WS.POC.Main
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
-                endpoints.MapHub<CommunicationHub>("comms");
+                endpoints.MapHub<CommunicationHub>("comms"); // .RequireCors("AnyOrigin");
             });
 
             app.UseSpa(spa =>
